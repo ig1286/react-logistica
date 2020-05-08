@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Tabela from './Tabela';
+import { render } from '@testing-library/react';
 
-function App() {
-  const descricao = [
-
+class App extends Component {
+  state = {
+       
+    descricao: [ 
+    
   { Cliente:'Walker S.A',
     Descricao:'Tonners',
     Quantidade:'50',
@@ -28,15 +31,17 @@ function App() {
     Saida:'06/03/2020',
     Dimensao:'20x10x30',
     Valor:'5.000,00'
-  },
+  }
+  ],
+  };
 
-  ];
+    render(){
+      return (
+      <div className="App">
+      <Tabela descricao = { this.state.descricao } />
+      </div>
+    );
+  }
+  
 
-  return (
-    <div className="App">
-     <Tabela descricao = { descricao } />
-    </div>
-  );
-}
-
-export default App;
+} export default App;

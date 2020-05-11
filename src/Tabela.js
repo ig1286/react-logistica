@@ -2,8 +2,8 @@ import React, { Component } from 'react' ;
 
     const TableHead = () => {
       return (
-              <thead>
-              <tr>
+              <thead className = "card-panel">
+              <tr className = " deep-orange lighten-5">
                 <th>Cliente</th>
                 <th>Descrição</th>
                 <th>Quantidade</th>
@@ -18,43 +18,34 @@ import React, { Component } from 'react' ;
 
     }
 
-    const TableBody = props => {
-      const linhas = props.descricao.map((linha,index) => {
-        return (
-            <tr>
-              <td>{linha.Cliente}</td>
-              <td>{linha.Descricao}</td>
-              <td>{linha.Quantidade}</td>
-              <td>{linha.Entrada}</td>
-              <td>{linha.Saida}</td>
-              <td>{linha.Dimensao}</td>
-              <td>{linha.Valor}</td>
-              <td><button>Cadastrar</button></td>
-            </tr>
-        )}
-        );
-        return (
-          <tbody>
-            {linhas}
-          </tbody>
-        );
-
-    }
-      
-    class Tabela extends Component{
-        render(){
-
-            const {descricao} = this.props; 
-
-            return(
-                <table>
-                  <TableHead />
-                  <TableBody descricao = {descricao}/>             
-                  
-              </table>
-            )
-
-        }
-    }
-
-    export default Tabela;
+const TableBody = props => {
+  const linhas = props.descricao.map((linha,index) => {
+    return (
+        <tr key={index}>
+          <td>{linha.cliente}</td>
+          <td>{linha.descricao}</td>
+          <td>{linha.quantidade}</td>
+          <td>{linha.entrada}</td>
+          <td>{linha.saida}</td>
+          <td>{linha.dimensao}</td>
+          <td>{linha.valor}</td>
+          <td><button onClick = {() => {props.removeCliente(index)}} className = 'waves-effect  red darken-4 btn'>Remover</button></td>
+        </tr>
+    )}
+    );
+    return (
+      <tbody>{linhas}</tbody>
+    );
+}
+class Tabela extends Component{
+  render(){
+    const {descricao, removeCliente} = this.props; 
+    return(
+      <table className = "centered highlight">
+        <TableHead />
+        <TableBody descricao = {descricao} removeCliente = {removeCliente} />             
+      </table>
+    )
+  }
+}
+export default Tabela;

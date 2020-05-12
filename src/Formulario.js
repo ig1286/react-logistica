@@ -1,9 +1,62 @@
  import React , { Component } from 'react'
+ import FormValidator from './FormValidator'
+ import PopUp from './PopUp';
 
 class Formulario extends Component {
 
     constructor (props){
             super(props);
+
+            this.validador = new FormValidator([
+                {
+                campo:'cliente',
+                metodo:'isEmpty',
+                validoQuando: false,
+                mensagem:'Adicione o nome do Cliente' 
+                },
+                {
+                campo:'descricao',
+                metodo:'isEmpty',
+                validoQuando: false,
+                mensagem:'Adicione a descrição do Produto'     
+                },
+                {
+                campo:'quantidade',
+                metodo:'isInt',
+                args: [{min:1, max:99999}],
+                validoQuando: true,
+                mensagem:'Adicione a Quantidade' 
+                },
+                {
+                campo:'entrada',
+                metodo:'isInt',
+                args: [{min:1, max:99999}],
+                validoQuando: true,
+                mensagem:'Adicione a Data de Entrada'
+                },
+                {
+                campo:'saida',
+                metodo:'isInt',
+                args: [{min:1, max:99999}],
+                validoQuando: true,
+                mensagem:'Adicione a Data de Saída'
+                },
+                {
+                campo:'dimensao',
+                metodo:'isInt',
+                args: [{min:1, max:99999}],
+                validoQuando: true,
+                mensagem:'Adicione a Dimensão' 
+                },
+                {
+                campo:'valor',
+                metodo:'isInt',
+                args: [{min:1, max:99999}],
+                validoQuando: true,
+                mensagem:'Adicione o Valor' 
+                }
+
+            ])
 
             this.stateInicial = {
                 cliente:'',
@@ -13,6 +66,7 @@ class Formulario extends Component {
                 saida:'',
                 dimensao:'',
                 valor:'',
+                validacao: this.validador.valido(),
             }
                 this.state = this.stateInicial;
 
@@ -26,8 +80,22 @@ class Formulario extends Component {
     }
 
     submitFormulario = () => {
+
+        const validacao = this.validador.valida(this.state);
+
+        if(validacao.isValid){
         this.props.escutadorDeSubmit(this.state);
         this.setState(this.stateInicial);
+        }else{
+            const {cliente, descricao, quantidade, entrada, saida, valor} = validacao;
+            const campos = [cliente, descricao, quantidade, entrada, saida, valor];
+            const camposInvalidos = campos.filter(elem => {
+                return elem.isInvalid;
+            });
+            camposInvalidos.forEach(campo => {
+                PopUp.exibeMensagem('error', campo.message);
+        });
+        }
     }
 
 
@@ -104,7 +172,7 @@ class Formulario extends Component {
                     onChange={this.escutadorDeInput}
                 />
 
-                <button onClick = {this.submitFormulario} type="button" className = 'waves-effect waves-light light-green accent-3 btn'>Cadastrar</button>
+                <button onClick = {this.submitFormulario} type="button" className = 'waves-effect waves-light green darken-4 btn'>Cadastrar</button>
             </form>
 
         );

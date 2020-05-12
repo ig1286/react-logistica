@@ -4,7 +4,8 @@ import Tabela from './Tabela';
 import Form from './Formulario';
 import dados from './Mock';
 import Header from './Header';
-import './App.css'
+import PopUp from './PopUp';
+
 
 class App extends Component {
   state = {
@@ -13,25 +14,24 @@ class App extends Component {
   };
 
     removeCliente = index =>{
-        const { descricao } = this.state;
-        
-        this.setState (
-          {
-            descricao: descricao.filter((Cliente, posAtual) =>{
+      const { descricao } = this.state;
       
-                  return posAtual !== index;
-            }),
-          }
+      this.setState (
+        {
+          descricao: descricao.filter((Cliente, posAtual) =>{
+    
+                return posAtual !== index;
+          }),
+        }
 
-        );
-
+      );
+      PopUp.exibeMensagem("error", "Removido com SUCESSO!")
     }
 
     escutadorDeSubmit = cliente => {
-     console.log(cliente)
       this.setState({ descricao:[...this.state.descricao, cliente]})
+      PopUp.exibeMensagem("success", "Cadastro feito com SUCESSO!")
     }
-
 
     render(){
       return (
@@ -44,4 +44,5 @@ class App extends Component {
   }
   
 
-} export default App;
+} 
+export default App;
